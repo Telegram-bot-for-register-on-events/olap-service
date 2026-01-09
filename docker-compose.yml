@@ -1,0 +1,57 @@
+services:
+  olap-db:
+    networks:
+      - shared-net
+    container_name: clickhouse-os
+    image: clickhouse/clickhouse-server:23.8
+    environment:
+      CLICKHOUSE_USER: default
+      CLICKHOUSE_PASSWORD: clickhouse
+      CLICKHOUSE_DB: default
+    ports:
+      - 8123:8123
+      - 9000:9000
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8123/ping || exit 1
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  migrate:
+    networks:
+      - shared-net
+    build: .
+    command: [ "/app/migrator", "up"]
+    environment:
+      - DSN=http://olap-db:8123?username=default&password=clickhouse&database=default
+      - DIR=internal/storage/clickhouse/migrations
+    depends_on:
+      olap-db:
+        condition: service_healthy
+    restart: on-failure
+
+  olap:
+    networks:
+      - shared-net
+    build: .
+    command: [ "/app/app" ]
+    environment:
+      - DB_DRIVER_NAME=clickhouse
+      - DSN=http://olap-db:8123?username=default&password=clickhouse&database=default
+      - NATS_URL=nats:4222
+      - NATS_TOPIC=register.user
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+networks:
+  shared-net:
+    name: shared-services-net
+    external: true
+
+volumes:
+  clickhouse_data:
+

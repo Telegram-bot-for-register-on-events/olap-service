@@ -1,0 +1,23 @@
+version: "2"
+
+linters:
+  enable:
+    - errcheck       # Проверяет непроверенные ошибки
+    - gosimple       # Находит упрощения кода
+    - govet          # Проверяет suspicious constructs
+    - ineffassign    # Находит неэффективные присваивания
+    - staticcheck    # Анализ кода
+    - typecheck      # Проверка типов
+    - unused         # Находит неиспользуемый код
+    - gofmt          # Проверяет форматирование
+    - goimports      # Сортировка импортов
+
+linters-settings:
+  gofmt:
+    simplify: true
+  goimports:
+    local-prefixes: github.com/Telegram-bot-for-register-on-events/olap-service
+
+run:
+  exclude-dirs:
+    - .git
