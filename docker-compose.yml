@@ -25,8 +25,8 @@ services:
     build: .
     command: [ "/app/migrator", "up"]
     environment:
-      - DSN=http://olap-db:8123?username=default&password=clickhouse&database=default
-      - DIR=internal/storage/clickhouse/migrations
+      - DSN=${DSN}
+      - DIR=${DIR}
     depends_on:
       olap-db:
         condition: service_healthy
@@ -38,10 +38,10 @@ services:
     build: .
     command: [ "/app/app" ]
     environment:
-      - DB_DRIVER_NAME=clickhouse
-      - DSN=http://olap-db:8123?username=default&password=clickhouse&database=default
-      - NATS_URL=nats:4222
-      - NATS_TOPIC=register.user
+      - DB_DRIVER_NAME=${DB_DRIVER_NAME}
+      - DSN=${DSN}
+      - NATS_URL=${NATS_URL}
+      - NATS_TOPIC=${NATS_TOPIC}
     depends_on:
       migrate:
         condition: service_completed_successfully

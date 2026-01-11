@@ -1,9 +1,9 @@
 -- +goose Up
 CREATE TABLE IF NOT EXISTS RegistrationAnalytics
 (
-    id UUID default generateUUIDv4(),
+    id UUID default generateUUIDv4() IS NOT NULL,
     chat_id UInt64,
-    username Nullable(String),
+    username String,
     event_id UUID,
     created_at DATETIME64
 )

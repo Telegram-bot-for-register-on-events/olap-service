@@ -10,18 +10,41 @@
 - Обработка событий регистрации пользователей
 - Сохранение аналитических данных
 
+## Структура проекта:
+```
+├── cmd
+│   ├── app         # Точка входа для запуска всего микросервиса
+│   └── migrator    # Точка входа для запуска миграций
+├── internal
+│   ├── app         # Инициализация микросервиса
+│   ├── config      # Конфигурация микросервиса
+│   ├── domain
+│   │   └── models   # Структуры данных
+│   ├── nats        # Инициализация NATS
+│   ├── service     # Сервисный слой валидирует данные и взаимодействует со слоем хранения данных
+│   └── storage     # Сервисный слой взаимодействует с базой данных
+│       └── clickhouse
+│           └── migrations  # Файл с миграциями для базы данных
+```
+
 ## Требования к запуску:
 - Docker
 - Git
 
 ### 1. Клонирование репозитория
-`git clone github.com/Telegram-bot-for-register-on-events/olap-service`
-`cd olap-service`
+```bash
+   git clone github.com/Telegram-bot-for-register-on-events/olap-service
+   cd olap-service
+```
 
 ### 2. Cоздание .env
 В корне проекта выполните команду:
-`mv .envexample .env`.
+```bash
+mv .envexample .env
+```
 
 ### 3. Запуск микросервиса
 В корне проекта выполните команду:
-`docker compose up -d --build`
+```bash
+docker compose up -d --build
+```
