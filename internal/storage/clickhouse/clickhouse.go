@@ -63,17 +63,15 @@ func (s *Storage) InsertRegistrationAnalytics(ctx context.Context, chatID int64,
 	dbCtx, _ := context.WithTimeout(ctx, 5*time.Second)
 	batch, err := s.DB.PrepareBatch(dbCtx, query)
 	if err != nil {
-		s.log.Error("error", err.Error(), slog.String("operation", opInsert))
 		return fmt.Errorf("%s: %w", opInsert, err)
 	}
 
 	err = batch.Append(chatID, username, eventID, createdAt)
 	if err != nil {
-		s.log.Error("error", err.Error(), slog.String("operation", opInsert))
+		return fmt.Errorf("%s: %w", opInsert, err)
 	}
 
 	if err = batch.Send(); err != nil {
-		s.log.Error("error", err.Error(), slog.String("operation", opInsert))
 		return fmt.Errorf("%s: %w", opInsert, err)
 	}
 

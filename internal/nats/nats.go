@@ -45,8 +45,6 @@ func NewNats(log *slog.Logger, url string, ra RegistrationAnalytics) (*Nats, err
 		return nil, fmt.Errorf("%s: %w", opConn, err)
 	}
 
-	log.Info("operation", opConn, slog.String("connected to", url))
-
 	// Включаем JetStream Context
 	js, err := nc.JetStream()
 	if err != nil {
