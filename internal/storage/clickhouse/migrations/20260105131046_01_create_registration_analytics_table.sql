@@ -1,10 +1,10 @@
 -- +goose Up
 CREATE TABLE IF NOT EXISTS RegistrationAnalytics
 (
-    id UUID default generateUUIDv4() IS NOT NULL,
-    chat_id UInt64,
+    id UUID default generateUUIDv4(),
+    chat_id Int64,
     username String,
-    event_id UUID,
+    event_id String,
     created_at DATETIME64
 )
     ENGINE = MergeTree()

@@ -59,7 +59,7 @@ func (s *Storage) Close() {
 
 // InsertRegistrationAnalytics сохраняет данные зарегистрировавшегося на мероприятие пользователя
 func (s *Storage) InsertRegistrationAnalytics(ctx context.Context, chatID int64, username string, eventID string, createdAt time.Time) error {
-	query := `INSERT INTO RegistrationAnalytics (chat_id, username, event_id, created_at) VALUES (?, ?, ?, ?)`
+	query := `INSERT INTO RegistrationAnalytics (chat_id, username, event_id, created_at) VALUES (?, ?, '?', ?)`
 	batch, err := s.DB.PrepareBatch(ctx, query)
 	if err != nil {
 		s.log.Error("error", err.Error(), slog.String("operation", opInsert))
